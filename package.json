@@ -1,0 +1,28 @@
+{
+  "name": "wellfi",
+  "version": "1.0.0",
+  "description": "Health Assessment App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "develop": "concurrently \"npm run watch\" \"cd client/wellfi && npm start\"",
+    "watch": "nodemon server.js"
+  },
+  "keywords": [
+    "Health"
+  ],
+  "author": "Terrell Hudson",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^3.10.0",
+    "bcrypt": "^5.0.1",
+    "concurrently": "^7.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.6",
+    "nodemon": "^2.0.16"
+  }
+}

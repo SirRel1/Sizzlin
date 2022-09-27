@@ -1,0 +1,15 @@
+.background {
+    height: 100vh !important;
+}
+
+.register{
+    justify-content: end;
+    margin-left: 65%;
+    border: 1px solid rgba(0, 0, 0, 0.051);
+    padding: 8px;
+    border-radius: 8px;
+    background-color: rgba(250, 235, 215, 0.37);
+    margin-top: -2.4%;
+    font-size: 1.3rem;
+
+}
