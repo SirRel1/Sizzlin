@@ -1,0 +1,10 @@
+.Jumbo {
+margin-left: 27vw;
+border-bottom: 5px solid rgb(59, 6, 6);
+border-radius: 10px;
+box-shadow: 10px 8px 15px 2px;
+}
+
+.Background {
+    background-color: rgb(247, 40, 40);
+}
