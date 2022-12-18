@@ -23,7 +23,7 @@ export default function DashboardComponent() {
     <Navbar className='navColor' variant='light' expand="lg">
       <Container>
         
-        <Navbar.Brand href="#home" className='brand'>S i Z Z L i N .</Navbar.Brand>
+        <Navbar.Brand href="#home" className='brand sizzling-text'>S i Z Z L i N .</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

@@ -1,6 +1,6 @@
 
 .brand {
-    color: rgb(247, 40, 40) !important;
+    
     font-family: 'Rubik Microbe', cursive;
     font-size: 1.5rem;
     font-weight: bold;
@@ -17,3 +17,23 @@
 .navColor{
     background-color: rgb(255, 166, 0) !important;;
 }
+
+.sizzling-text {
+    /* Add a font style and color to the text */
+    font-family: 'Rubik Microbe', cursive;
+    color: rgb(222, 31, 31) !important;
+  
+    /* Add a text-shadow effect to give the text a fiery appearance */
+    text-shadow: 0 0 10px rgba(255, 55, 0, 0.257), 0 0 20px rgba(255, 68, 0, 0.291), 0 0 30px rgba(255, 0, 0, 0.36), 0 0 40px rgba(255, 0, 0, 0.253), 0 0 50px rgb(255, 0, 0), 0 0 60px #ff0, 0 0 70px #ff0, 0 0 80px #ff0, 0 0 90px #ff0, 0 0 100px rgb(255, 0, 0);
+  
+    /* Add a transition effect to smoothly animate the color change */
+    transition: color 0.9s ease;
+  
+    /* Add a filter effect to give the text a cooking appearance */
+    filter: brightness(50%) hue-rotate(11deg) saturate(150%);
+  }
+  
+  /* Use the :hover pseudo-class to change the text color when the mouse hovers over it */
+  .sizzling-text:hover {
+    color: #ff0000;
+  }

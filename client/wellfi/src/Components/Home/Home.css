@@ -1,10 +1,64 @@
 .Jumbo {
 margin-left: 27vw;
 border-bottom: 5px solid rgb(59, 6, 6);
-border-radius: 10px;
+border-radius: 2px;
 box-shadow: 10px 8px 15px 2px;
 }
 
 .Background {
     background-color: rgb(247, 40, 40);
 }
+
+.CardsContainer {
+    display: flex;
+    margin-left: 20%;
+    margin-right: 20%;   
+}
+
+.Cards {
+    margin: 3rem;
+    background-color: rgba(255, 166, 0, 0.89);
+    color: aliceblue;
+    box-shadow: 4px 3px 8px 4px rgba(0, 0, 0, 0.37);
+    transition: all 0.3s ease-in-out;
+}
+
+.Cards:hover {
+    background-color: rgba(255, 0, 0, 0.89);
+    box-shadow: 8px 6px 16px 8px rgba(0, 0, 0, 0.37);
+    transform: scale(1.1);
+  }
+
+.Articles {
+    font-family: fantasy;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 5rem;
+    border-bottom: 2px solid rgba(255, 166, 0, 0.89); ;
+}
+
+
+
+.truncated-text {
+
+  max-height: 150px !important;
+  overflow: hidden !important;
+  transition: height 0.9s ease;
+}
+
+.read-more {
+  /* Style the "Read more" link */
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  border: none;
+  background-color: transparent;
+}
+
+.expanded {
+
+    max-height: 500px !important;
+    overflow: hidden !important;
+  }
+
+  

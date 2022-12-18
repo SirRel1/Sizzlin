@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from '@apollo/client'
 import { LOGIN_USER } from '../../utils/mutations';
@@ -25,9 +25,20 @@ const Login = () => {
   });
   
   const [validated] = useState(false);
+  const [word, setWord] = useState(['Mix', 'Cook', 'Eat']);
   const [showAlert, setShowAlert] = useState(false);
   const [login] = useMutation(LOGIN_USER);
   const navigate = useNavigate();
+  const [text, setText] = useState('Mix');
+  let index = 0;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setText(word[index]);
+      index = (index + 1) % word.length;
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -96,7 +107,7 @@ const Login = () => {
         
 
         <Container className="login col-4 p-4 mt-5 bg-white border-none ">
-          <h1 className="tag">Mix It Up.</h1>
+          <h1 className="tag">{text === 'Eat' ? text + " It Up!" : text + " It Up."} </h1>
           <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
             <Form.Group className="mb-3" controlId="email">
               <Form.Label>Email address</Form.Label>
