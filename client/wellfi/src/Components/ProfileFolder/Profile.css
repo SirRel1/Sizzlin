@@ -1,0 +1,6 @@
+.rounded-circle {
+    border-radius: 40% !important;
+    height: 20vh;
+    width: 11vw;
+    transform: translate(17%, 7%);
+}

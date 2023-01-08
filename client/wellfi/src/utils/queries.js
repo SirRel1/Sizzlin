@@ -6,6 +6,7 @@ export const CURRENT_USER = gql`
       id
       username
       email
+      
     }
   }
 `;
@@ -16,6 +17,7 @@ export const QUERY_ME = gql`
       _id
       username
       email
+      
     }
   }
 `;

@@ -31,6 +31,17 @@ const resolvers = {
       return { user, token };
     },
   },
+  Query: {
+    users: async (parent, args, context) => {
+      if (context.user) {
+        const user = await User.findOne(context.user._id);
+
+        return user;
+      }
+      
+      throw new AuthenticationError('Not logged in');
+    }
+  },
 };
 
 module.exports = resolvers;

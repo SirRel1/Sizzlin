@@ -12,6 +12,9 @@
 
 .link {
     color: rgb(255, 255, 255) !important;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
 .navColor{
@@ -36,4 +39,13 @@
   /* Use the :hover pseudo-class to change the text color when the mouse hovers over it */
   .sizzling-text:hover {
     color: #ff0000;
+  }
+
+  @media only screen and (min-width: 1080px) and (min-height: 2340px) {
+    /* Add your styles here */
+    /* .link,
+    .options,
+    .dropdown {
+        display: none;
+    } */
   }

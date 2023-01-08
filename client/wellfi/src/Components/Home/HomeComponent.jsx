@@ -10,15 +10,15 @@ import articleOne from "../../Images/Couple_RecipeBook(Jumbo).webp";
 import articleTwo from "../../Images/Old_Couple(Jumbo).jpg";
 import articleThree from "../../Images/Health_Quote(Jumbo).webp";
 import "./Home.css";
-import { Carousel, Button, Card } from "react-bootstrap";
+import { Carousel, Button, Card, Container, Row, Col } from "react-bootstrap";
 import { useState } from "react";
 
 export default function HomeComponent() {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  console.log(`This is the the homepage data: `);
   return (
     <div>
+      {/* <Container fluid> */}
       <Carousel className="Background">
         <Carousel.Item>
           <img
@@ -89,6 +89,7 @@ export default function HomeComponent() {
             <Button variant="primary">Go somewhere</Button>
           </Card.Body>
         </Card>
+       
         <Card className="Cards" style={{ width: "18rem" }}>
           <Card.Img variant="top" src={articleThree} />
           <Card.Body>
@@ -112,7 +113,9 @@ export default function HomeComponent() {
             <Button variant="primary">Go somewhere</Button>
           </Card.Body>
         </Card>
+       
       </div>
+      {/* </Container> */}
     </div>
   );
 }
