@@ -10,6 +10,21 @@
     word-spacing: 2px;
 }
 
+.dashIcon {
+  height: 5vh;
+  width: 111%;
+  border: 2px solid rgb(147, 5, 5);
+  margin-left: 3px;
+  position: right;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.me-auto1 {
+  position: absolute;
+  right: 7%;
+}
+
 .link {
     color: rgb(255, 255, 255) !important;
     position: absolute;

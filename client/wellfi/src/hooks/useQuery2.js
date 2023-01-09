@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axiosClient from '../config/axios';
 
-const useQueryAgain = (url, refetch) => {
+export const useQueryAgain = (url, refetch) => {
   const [state, setState] = useState({
     data: null,
     isLoading: true,

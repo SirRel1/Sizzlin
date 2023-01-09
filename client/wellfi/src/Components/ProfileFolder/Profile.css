@@ -1,6 +1,8 @@
 .rounded-circle {
-    border-radius: 40% !important;
-    height: 20vh;
-    width: 11vw;
+    border-radius: 50% !important;
+    height: 18vh;
+    width: 10vw;
+    object-fit: cover;
     transform: translate(17%, 7%);
+    border: 3px solid rgb(235, 176, 27);
 }

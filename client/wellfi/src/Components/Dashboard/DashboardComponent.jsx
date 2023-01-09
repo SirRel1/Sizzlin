@@ -1,4 +1,5 @@
 import Auth from "../../utils/auth";
+import { useState } from "react";
 import React from "react";
 import {
   Alert,
@@ -12,27 +13,33 @@ import {
   Row,
   Col,
 } from "react-bootstrap";
+import {useQueryAgain} from '../../hooks/useQuery2';
+import navProfile from '../../Images/profileImg.png'
 import "./Dashboard.css";
 
 export default function DashboardComponent() {
+
   function logoutHandler() {
     Auth.logout();
     window.location.replace("/");
   }
 
+
   return (
     // <Container fluid>
       
           <Navbar sticky="top" className="navColor" variant="light" expand="lg">
-            <Navbar.Brand href="#home" className="brand sizzling-text">
+            <Navbar.Brand href="/" className="brand sizzling-text">
               S i Z Z L i N .
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link href="/" className="options">
-                  Home
+              <Nav className="me-auto1">
+                <Nav.Link href="/profile" className="options">
+                  
+                  <img className="dashIcon" src= {navProfile} />
                 </Nav.Link>
+                </Nav>
                 {!Auth.loggedIn() ? (
                   <Nav.Link href="/login" className="link">
                     Login
@@ -46,6 +53,7 @@ export default function DashboardComponent() {
                   className="dropdown"
                   title="Dropdown"
                   id="basic-nav-dropdown"
+                  hidden
                 >
                   {/* <Button onClick={}>Logout</Button> */}
                   <NavDropdown.Item href="/profile">
@@ -59,7 +67,7 @@ export default function DashboardComponent() {
                     Separated link
                   </NavDropdown.Item>
                 </NavDropdown>
-              </Nav>
+              
             </Navbar.Collapse>
           </Navbar>
         

@@ -30,6 +30,7 @@ AWS.config.update({
 
 const uploadToS3 = async ({ file, userId }) => {
   const key = `${userId}/${id}`;
+  console.log(key)
   const command = new PutObjectCommand({
     Bucket: BUCKET,
     Key: key,
