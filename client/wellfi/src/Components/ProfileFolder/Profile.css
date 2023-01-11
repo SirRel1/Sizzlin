@@ -6,3 +6,27 @@
     transform: translate(17%, 7%);
     border: 3px solid rgb(235, 176, 27);
 }
+
+.statusBox {
+    width: 23%;
+    height: 8vh;
+    margin-right: 1px;
+    border-radius: 8px;
+    padding: 3px;
+    margin-left: 5px;
+    margin-top: .3%;
+    margin-bottom: .9%;
+}
+
+.statusBox::placeholder {
+    text-align: left;
+    /* padding-top: 2px; */
+    margin-top: -5px;
+}
+
+.statusButton {
+    margin-right: 1px;
+    border-radius: 8px;
+    padding: 3px;
+    margin-left: 5px;
+}

@@ -15,6 +15,7 @@ class AuthService {
     const decoded = decode(token);
     if (decoded.exp < Date.now() / 1000) {
       localStorage.removeItem("id_token");
+      window.location.href = "/";
       return true;
     }
     return false;

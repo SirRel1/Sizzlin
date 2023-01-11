@@ -11,6 +11,10 @@
 }
 
 .dashIcon {
+  content: "Profile";
+  visibility: visible;
+  padding: 1px;
+  font-size: 12px;
   height: 5vh;
   width: 111%;
   border: 2px solid rgb(147, 5, 5);
@@ -18,6 +22,24 @@
   position: right;
   border-radius: 50%;
   object-fit: cover;
+  background: #fff;
+  transition: all 0.2s ease;
+}
+
+.timeIcon {
+  content: "Timeline";
+  visibility: visible;
+  padding: 1px;
+  font-size: 12px;
+  height: 5vh;
+  width: 111%;
+  border: 2px solid rgb(147, 5, 5);
+  margin-left: 3px;
+  position: right;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #fff;
+  transition: all 0.2s ease;
 }
 
 .me-auto1 {

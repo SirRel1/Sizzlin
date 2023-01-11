@@ -7,6 +7,7 @@ import HomeComponent from "./Components/Home/HomeComponent";
 import RegisterComponent from "./Components/Register/RegisterComponent";
 import ProfileComponent from "./Components/ProfileFolder/ProfileComponent";
 import New from "./Components/Dashboard/New";
+import UserTimeline from "./Components/UserTimeline/UserTimeline";
 
 const link = createHttpLink({
   uri: 'http://localhost:3001/graphql',
@@ -31,6 +32,7 @@ function App() {
           <Route path="/new" element={<New />} />
           <Route path="/register" element={<RegisterComponent />} />
           <Route path="/profile" element={<ProfileComponent user={client} />} />
+          <Route path="/timeline" element={<UserTimeline user={client} />} />
         </Routes>
       </Router>
       </ApolloProvider>
