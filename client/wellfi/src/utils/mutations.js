@@ -19,8 +19,18 @@ export const LOGIN_USER = gql`
       user {
         id
         email
-        
       }
+    }
+  }
+`;
+
+export const ADD_POST = gql`
+  mutation Mutation($userId: ID!, $username: String! $thePost: String!) {
+    addPost(userId: $userId, username: $username thePost: $thePost) {
+      userId
+      username
+      thePost
+      id
     }
   }
 `;

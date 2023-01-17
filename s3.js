@@ -1,5 +1,7 @@
 const AWS = require('aws-sdk');
-
+const User = require('../WellFi/Models/User');
+const express = require("express");
+const app = express()
 const { S3Client, PutObjectCommand, GetObjectCommand,
     ListObjectsV2Command } = require("@aws-sdk/client-s3");
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner") ; 
@@ -30,7 +32,6 @@ AWS.config.update({
 
 const uploadToS3 = async ({ file, userId }) => {
   const key = `${userId}/${id}`;
-  console.log(key)
   const command = new PutObjectCommand({
     Bucket: BUCKET,
     Key: key,
@@ -70,9 +71,21 @@ const getUserPresignedUrls = async (userId) => {
       const presignedUrls = await Promise.all(
         imageKeys.map((key) => {
           const command = new GetObjectCommand({ Bucket: BUCKET, Key: key });
-          return getSignedUrl(s3, command, { expiresIn: 900 }); // default
+          const url = getSignedUrl(s3, command, { expiresIn: 3600 });
+
+          return getSignedUrl(s3, command, { expiresIn: 3600 }); // default
         })
-      );
+      )
+      if (presignedUrls) {
+        await User.findOneAndUpdate(
+          {
+            username: `${userId}`,
+          },
+          { $set: { profileImg: ` ${presignedUrls[0].split("?")[0]} ` } }
+        )
+      }
+      ;
+      
       return { presignedUrls };
     } catch (error) {
       console.log(error);

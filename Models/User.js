@@ -22,12 +22,14 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+
+    profileImg: {
+      type: String,
+      required: false,
+      default: "No proifle photo yet"
     }
 
-    // profilePic: {
-    //   type: String,
-    //   required: false
-    // }
   },
 
   {

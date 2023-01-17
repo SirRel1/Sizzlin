@@ -13,11 +13,23 @@ export const CURRENT_USER = gql`
 
 export const QUERY_ME = gql`
   query user {
-    user {
-      _id
+    users {
+      id
       username
       email
       
+    }
+  }
+`;
+
+export const POST_QUERY = gql`
+  query Query {
+    posts {
+      username
+      userId
+      thePost
+      profileImg
+      createdAt
     }
   }
 `;

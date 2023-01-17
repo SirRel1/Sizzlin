@@ -1,7 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Auth from "../../utils/auth";
-import { ADD_USER } from "../../utils/mutations";
+import { ADD_POST } from "../../utils/mutations";
 import { useMutationAgain } from "../../hooks/useMutation2";
 import { useMutation, useQuery } from "@apollo/client";
 import { CURRENT_USER, QUERY_ME } from "../../utils/queries";
@@ -18,8 +18,26 @@ const URL = "/images";
 const prefix = "https://sizzlinimages.s3.amazonaws.com/";
 
 export default function ProfileComponent() {
+  // const token = sessionStorage.getItem("token");
   const [ refetch, setRefetch ] = useState(0);
   const [ status, setStatus ] = useState("");
+  const [charCount, setCharCount] = useState(0);
+  const countClass = charCount > 312 ? 'exceeded' : '';
+  const [ aPost, setAPost ] = useState({
+    userId: "",
+    username: "",
+    thePost: ""
+  });
+  const [addPost, { error }] = useMutation(ADD_POST);
+  // const { loading, queryError, queryData } = useQuery(QUERY_ME);
+
+
+  
+    // const { id } = queryData;
+    // const userId = id.queryData.user[0];
+    // console.log("The users ID: ", queryData);
+  
+
 
   const {
     mutate: uploadImage,
@@ -35,6 +53,7 @@ export default function ProfileComponent() {
 
   const { data } = Auth.getProfile();
   const user = data.username;
+
   // const { loading, data }  = useQuery(userId ? CURRENT_USER : QUERY_ME, {
   //     variables: { userId: userId }
   // });
@@ -49,8 +68,28 @@ export default function ProfileComponent() {
   // };
 
   const handleChange = (event) => {
+    const { name, value } = event.target;
+    setCharCount(event.target.value.length);
     setStatus(event.target.value);
+    setAPost({userId:user, username: user, [name]:value})
   };
+
+  const postHandler = async (e) => {
+
+    try {
+        const { data } = await addPost({
+          variables: { ...aPost },
+        })
+          Auth.getToken(data);
+    } catch (err) {
+        console.error(err);
+    }
+
+    setTimeout(() => {
+      setStatus("");
+    }, 3000);
+    
+  }
 
   const fileSelectedHandler = async (e) => {
     // const [ error, setError ] = useState("");
@@ -73,15 +112,23 @@ export default function ProfileComponent() {
 
   return (
     <div className="profileSection">
-      
       <input
+        id="words"
         className="statusBox"
+        name="thePost"
         type="text"
-        placeholder={user + " "+ "Whats cookin..."}
+        placeholder={user.toUpperCase() + " " + "whats cookin ? "}
         value={status}
         onChange={handleChange}
       />
-      <button className="statusButton">Update Status</button>
+      <p className={countClass}>Character count: {charCount}/313</p>
+      <button
+        className="statusButton"
+        onClick={postHandler}
+        disabled={charCount > 313 || charCount < 1} 
+      >
+        Update Status
+      </button>
       <Card style={{ width: "18rem" }}>
         <input
           id="imageInput"
@@ -89,20 +136,14 @@ export default function ProfileComponent() {
           hidden
           onChange={fileSelectedHandler}
         />
-        {/* {imageUrls ? imageUrls.map(recent => 
-         <Card.Img
-          variant="top"
-          src= {recent}
-          className="rounded-circle"
-        />) : <Card.Img
-        variant="top"
-        src= ""
-        className="rounded-circle"
-      /> } */}
 
         <Card.Img
           variant="top"
-          src={!imageUrls == [] ? imageUrls.slice(0, 1)[0] : defaultProfile}
+          src={
+            imageUrls && imageUrls.length
+              ? imageUrls.slice(0, 1)[0]
+              : defaultProfile
+          }
           className="rounded-circle"
         />
 

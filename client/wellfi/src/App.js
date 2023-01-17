@@ -31,7 +31,7 @@ function App() {
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/new" element={<New />} />
           <Route path="/register" element={<RegisterComponent />} />
-          <Route path="/profile" element={<ProfileComponent user={client} />} />
+          <Route path="/profile" element={<ProfileComponent theUser={client} />} />
           <Route path="/timeline" element={<UserTimeline user={client} />} />
         </Routes>
       </Router>

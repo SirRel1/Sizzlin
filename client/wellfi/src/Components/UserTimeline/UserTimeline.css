@@ -1,0 +1,7 @@
+.avatarPic {
+    border-radius: 50%;
+    height: 7vh;
+    width: 4vw;
+    object-fit: cover;
+    border: 2px solid rgb(255, 166, 0);
+}
