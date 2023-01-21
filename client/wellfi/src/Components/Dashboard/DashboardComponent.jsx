@@ -51,7 +51,7 @@ export default function DashboardComponent() {
           </Nav.Link>
         ) : (
           <Button onClick={logoutHandler} className="link">
-            Logout:{" "}
+            Logout:{}
           </Button>
         )}
         <NavDropdown

@@ -10,10 +10,21 @@ const typeDefs = gql`
   }
 
   type Post {
-    id: ID!
+    _id: ID!
     userId: ID!
     username: String!
     thePost: String!
+    replies: [Reply]
+    profileImg: String
+    createdAt: String
+  }
+  
+  type Reply {
+    _id: ID
+    postId: ID
+    userId: ID
+    username: String
+    replyText: String
     profileImg: String
     createdAt: String
   }
@@ -25,15 +36,19 @@ const typeDefs = gql`
 
   type Query {
     users: [User]!
-    user(userId: ID!): User
+    user(username: String!): User
     posts: [Post]!
+    replies: [Reply]!
     post(id: ID!): Post
+    reply(id: ID!): Reply
   }
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     addPost(userId: ID!, username: String!, thePost: String!): Post
-    Post(id: ID!, userId: ID!, thePosts: String!): Post
+    addReply(userId: ID!, postId: ID! username: String!, replyText: String!): Reply
+    Post(_id: ID!, userId: ID!, thePosts: String!): Post
+    Reply(_id: ID!, userId: ID!, replyText: String): Reply
     User(username: String!, email: String!, password: String!): User
     login(email: String!, password: String!): Auth
   }

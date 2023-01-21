@@ -27,10 +27,21 @@ export const LOGIN_USER = gql`
 export const ADD_POST = gql`
   mutation Mutation($userId: ID!, $username: String! $thePost: String!) {
     addPost(userId: $userId, username: $username thePost: $thePost) {
+      _id
       userId
       username
       thePost
-      id
+    }
+  }
+`;
+
+export const ADD_REPLY = gql`
+  mutation Mutation($postId: ID!, $userId: ID!, $username: String!, $replyText: String!) {
+    addReply(postId: $postId, userId: $userId, username: $username, replyText: $replyText) {
+      postId
+      userId
+      username
+      replyText
     }
   }
 `;

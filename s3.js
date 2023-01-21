@@ -76,7 +76,8 @@ const getUserPresignedUrls = async (userId) => {
           return getSignedUrl(s3, command, { expiresIn: 3600 }); // default
         })
       )
-      if (presignedUrls) {
+      if (presignedUrls.length > 0) {
+        
         await User.findOneAndUpdate(
           {
             username: `${userId}`,

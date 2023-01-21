@@ -22,8 +22,13 @@ const postSchema = new Schema(
     },
 
     profileImage: {
-      type: String
+      type: String,
     },
+
+    replies: 
+      [{type: mongoose.Types.ObjectId,
+      ref: "Reply"}]
+    ,
 
     createdAt: {
       type: Date,
@@ -40,5 +45,6 @@ const postSchema = new Schema(
 );
 
 const Post = model("Posts", postSchema);
+
 
 module.exports = Post;

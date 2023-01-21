@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Auth from "../../utils/auth";
-import { ADD_POST } from "../../utils/mutations";
+import { USERPOST_QUERY } from "../../utils/queries";
 import { useMutationAgain } from "../../hooks/useMutation2";
 import { useMutation, useQuery } from "@apollo/client";
 import { CURRENT_USER, QUERY_ME } from "../../utils/queries";
@@ -10,35 +10,19 @@ import { Button, Card, Image, Row, Col } from "react-bootstrap";
 import { useQueryAgain } from "../../hooks/useQuery2";
 import defaultProfile from "../../Images/DefaultProfile-SiZZLIN.png";
 import "./Profile.css";
+import PostInput from "./PostInput";
 
 
 // const [addUser, { error }] = useMutation(ADD_USER);
 const validFileTypes = ["image/jpg", "image/jpeg", "image/png"];
 const URL = "/images";
-const prefix = "https://sizzlinimages.s3.amazonaws.com/";
+
 
 export default function ProfileComponent() {
   // const token = sessionStorage.getItem("token");
+ 
   const [ refetch, setRefetch ] = useState(0);
-  const [ status, setStatus ] = useState("");
-  const [charCount, setCharCount] = useState(0);
-  const countClass = charCount > 312 ? 'exceeded' : '';
-  const [ aPost, setAPost ] = useState({
-    userId: "",
-    username: "",
-    thePost: ""
-  });
-  const [addPost, { error }] = useMutation(ADD_POST);
-  // const { loading, queryError, queryData } = useQuery(QUERY_ME);
-
-
   
-    // const { id } = queryData;
-    // const userId = id.queryData.user[0];
-    // console.log("The users ID: ", queryData);
-  
-
-
   const {
     mutate: uploadImage,
     isLoading: uploading,
@@ -53,6 +37,16 @@ export default function ProfileComponent() {
 
   const { data } = Auth.getProfile();
   const user = data.username;
+  const username = data.username;
+
+  
+   const { loading, error: postError, data: postData } = useQuery(USERPOST_QUERY, {
+     variables: { username }
+   });
+  //  debug querying and resolver to load user post!
+   if (loading) return <p>Loading...</p>;
+   if (postError) return `<p>Error : ${postError}</p>`;
+  //  console.log("Post data: ", postData.user.posts[0].thePost);
 
   // const { loading, data }  = useQuery(userId ? CURRENT_USER : QUERY_ME, {
   //     variables: { userId: userId }
@@ -67,29 +61,9 @@ export default function ProfileComponent() {
   //   const [status, setStatus] = useState("What's Cookin...");
   // };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setCharCount(event.target.value.length);
-    setStatus(event.target.value);
-    setAPost({userId:user, username: user, [name]:value})
-  };
+ 
 
-  const postHandler = async (e) => {
-
-    try {
-        const { data } = await addPost({
-          variables: { ...aPost },
-        })
-          Auth.getToken(data);
-    } catch (err) {
-        console.error(err);
-    }
-
-    setTimeout(() => {
-      setStatus("");
-    }, 3000);
-    
-  }
+  
 
   const fileSelectedHandler = async (e) => {
     // const [ error, setError ] = useState("");
@@ -112,23 +86,7 @@ export default function ProfileComponent() {
 
   return (
     <div className="profileSection">
-      <input
-        id="words"
-        className="statusBox"
-        name="thePost"
-        type="text"
-        placeholder={user.toUpperCase() + " " + "whats cookin ? "}
-        value={status}
-        onChange={handleChange}
-      />
-      <p className={countClass}>Character count: {charCount}/313</p>
-      <button
-        className="statusButton"
-        onClick={postHandler}
-        disabled={charCount > 313 || charCount < 1} 
-      >
-        Update Status
-      </button>
+      <PostInput user={user} />
       <Card style={{ width: "18rem" }}>
         <input
           id="imageInput"
@@ -163,6 +121,9 @@ export default function ProfileComponent() {
           <Card.Text>Some profile information goes here</Card.Text>
         </Card.Body>
       </Card>
+
+      {!loading && postData.user.posts &&
+        postData.user.posts.map((post) => <p>{post.thePost}</p>)}
     </div>
   );
 }

@@ -25,11 +25,31 @@ export const QUERY_ME = gql`
 export const POST_QUERY = gql`
   query Query {
     posts {
+      _id
       username
       userId
       thePost
       profileImg
       createdAt
+      replies {
+        replyText
+        username
+        userId
+      }
+    }
+  }
+`;
+
+export const USERPOST_QUERY = gql`
+  query user($username: String!) {
+    user(username: $username) {
+      username
+      email
+      posts {
+        _id
+        thePost
+        createdAt
+      }
     }
   }
 `;

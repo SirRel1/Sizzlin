@@ -1,6 +1,7 @@
 const { AuthenticationError } = require("apollo-server-express");
 const { User } = require("../Models");
 const { Post } = require("../Models");
+const { Reply } = require("../Models");
 const { signToken } = require("../utils/auth");
 
 const resolvers = {
@@ -14,7 +15,7 @@ const resolvers = {
 
     addPost: async (_, { userId, thePost, username}) => {
       // const theId = await User.findOne({ _id: userId });
-      const clientId = await User.findOne({ username: userId});
+      const clientId = await User.findOne({ username });
       const currentTime = new Date().getTime();
       
       console.log(currentTime)
@@ -25,6 +26,27 @@ const resolvers = {
          createdAt: currentTime
       });
       return { newPost };
+    },
+    
+    addReply: async (_, { postId, userId, replyText, username}) => {
+      // const theId = await User.findOne({ _id: userId });
+      // const replies = await Post.findById({_id: postId });
+      const user_Id = await User.findOne({userId})
+      const currentTime = new Date().getTime();
+      
+      console.log(currentTime)
+      const newReply = await Reply.create({
+         userId: user_Id._id,
+         username,
+         replyText,
+         repliedAt: currentTime
+      });
+
+      const postReply = await Post.findOneAndUpdate(
+        { _id: postId },
+        { $push: { replies: newReply._id } }
+      );
+      return { ...postReply };
     },
 
     User: {
@@ -67,13 +89,19 @@ const resolvers = {
         
         return user;
       },
-      user: async (_, { userId }) => {
-        const {username, email,  }= await User.findById(userId);
-        const allPost = await Post.find({userId});
-        const posts = allPost.map(post => post._doc.thePost.toString());
-        const id = allPost.map((post) => post._doc._id.toString().replace('[]', ""));
-        
-        return {username, email, thePost: posts, id}
+      user: async (_, { username }) => {
+        const user = await User.findOne({username});
+        const allPost = await Post.find({ userId: user._id});
+        const posts = [...allPost];
+        const email = user.email
+        const eachPost = [];
+        const id = [];
+        for (let i = 0; i < posts.length; i++) {
+          eachPost.push(posts[i]._doc.thePost)
+          id.push(posts[i]._doc._id).toString();
+        }
+
+        return {_id: id, thePost: eachPost, posts, username: user.username, email}
       },
       // posts: async({userId}) => {
       //   const thePost = await Post.find({ userId });
@@ -81,9 +109,9 @@ const resolvers = {
       //   return {thePost}
       // },
       posts: async () => {
-        const allPost = await Post.find({});
+        const allPost = await Post.find({}).populate("replies");
         const eachPost = [];
-        const id = [];
+        const _id = [];
         const thePost = [];
         const userId = []
         const createdAt = [];
@@ -93,13 +121,18 @@ const resolvers = {
            const postWithProfileImg = { ...allPost[i]._doc, profileImg };
 
           eachPost.push(postWithProfileImg);
-          id.push(allPost[i]._doc._id);
+          _id.push(allPost[i]._doc._id);
           thePost.push(allPost[i]._doc.thePost);
           createdAt.push(allPost[i]._doc.createdAt);
           userId.push(allPost[i]._doc.userId.toString());
         }
-        
+        // console.log(eachPost)
         return eachPost;
+      },
+      replies: async () => {
+        // const allPost = await Post.find({}).populate("replies");
+        
+        // return eachPost;
       },
       post: async(_, {_id}) => {
         return await Post.findById(_id);

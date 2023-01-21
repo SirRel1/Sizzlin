@@ -1,7 +1,125 @@
 .avatarPic {
-    border-radius: 50%;
-    height: 7vh;
-    width: 4vw;
+  float: left;
+  margin-right: 0.4%;
+  margin-bottom: 7%;
+  border-radius: 50%;
+  height: 7vh;
+  width: 4vw;
+  object-fit: cover;
+  border: 2px solid rgb(255, 166, 0);
+}
+
+.postBox {
+ 
+  border: 1px solid rgba(214, 97, 24, 0.945);
+  box-shadow: 3px 2px 2px grey;
+  padding: .2%;
+  border-radius: 5px;
+  margin-bottom: 3%;
+  width: 36%;
+  display: flex;
+  background-color: rgba(197, 194, 156, 0.226);
+  grid-template-columns: 80px 1fr;
+  /* justify-content: space-between; */
+  align-items: flex-start;
+  
+}
+
+.author {
+    position: absolute;
+    left: 4.6%;
+}
+
+.textBox {
+  grid-column: 2 / 3;
+  position: relative;
+  margin-top: 4%;
+  margin-left: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.created {
+  position: absolute;
+  margin-left: 31.7%;
+  border-right: 2%;
+  padding: .01%;
+  box-shadow: 1px 1px 1px rgba(216, 121, 13, 0.175);
+  right: 5;
+  font: caption;
+  font-size: smaller;
+  overflow: hidden;
+  width: 4%;
+  /* top: 0; */
+  
+  
+}
+
+.replyBubble {
     object-fit: cover;
-    border: 2px solid rgb(255, 166, 0);
+    position: absolute;
+    width: 3.4%;
+    height: 60.5%;
+    border: 1px solid rgba(2, 117, 2, 0.363);
+    /* margin-top: 4.5%; */
+    box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
+    margin-left: 8%;
+    border-radius: 50%;
+    background-color: rgb(255, 243, 240);
+}
+
+.replyContainer {
+    position: absolute;
+    margin-top: 4.5%;
+    width: 36.4%;
+    height: 3.9%;
+    margin-left: 5%;
+    border-radius: 50%;
+}
+
+textarea {
+    resize: none;
+    width: 70%;
+    position: absolute;
+    margin-top: 4.8%;
+}
+
+.hide {
+    display: none;
+
+}
+
+.show {
+    display: block;
+
+}
+
+
+
+.bouncing {
+    transform: translateY(2px);
+    animation: bounce 0.1s ease-in-out;
+    object-fit: cover;
+    position: relative;
+    width: 3.4%;
+    height: 20.5%;
+    border: 1px solid rgba(2, 117, 2, 0.363);
+    margin-top: 4.5%;
+    box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
+    margin-left: 8%;
+    border-radius: 50%;
+    background-color: rgb(255, 243, 240);
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-4px);
+    }
+    50% {
+        transform: translateY(5);
+    }
 }
