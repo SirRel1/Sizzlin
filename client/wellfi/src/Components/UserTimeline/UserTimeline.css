@@ -1,4 +1,9 @@
-.avatarPic {
+.post-container {
+  width: 35%; /* or any other desired percentage */
+  margin: 0 auto; /* centers the elements horizontally */
+}
+
+/* .avatarPic {
   float: left;
   margin-right: 0.4%;
   margin-bottom: 7%;
@@ -21,16 +26,16 @@
   background-color: rgba(197, 194, 156, 0.226);
   grid-template-columns: 80px 1fr;
   /* justify-content: space-between; */
-  align-items: flex-start;
-  
-}
+/* align-items: flex-start; */
 
+/* } */
+/* 
 .author {
     position: absolute;
     left: 4.6%;
-}
+} */
 
-.textBox {
+/* .textBox {
   grid-column: 2 / 3;
   position: relative;
   margin-top: 4%;
@@ -38,9 +43,9 @@
   display: flex;
   flex-direction: column;
   justify-content: left;
-}
+} */
 
-.created {
+/* .created {
   position: absolute;
   margin-left: 31.7%;
   border-right: 2%;
@@ -50,76 +55,196 @@
   font: caption;
   font-size: smaller;
   overflow: hidden;
-  width: 4%;
-  /* top: 0; */
-  
-  
-}
+  width: 4%; */
+/* top: 0; */
 
+/* } */
+
+/* .replyArea {
+    display: flex;
+    align-items: flex-start;
+    /* position: absolute; */
+/* margin-top: 6.5%; */
+/* margin-left: 4%; */
+/* } */
 .replyBubble {
-    object-fit: cover;
-    position: absolute;
-    width: 3.4%;
-    height: 60.5%;
-    border: 1px solid rgba(2, 117, 2, 0.363);
-    /* margin-top: 4.5%; */
-    box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
-    margin-left: 8%;
-    border-radius: 50%;
-    background-color: rgb(255, 243, 240);
+  object-fit: cover;
+  position: absolute;
+  width: 3.4%;
+  height: 60.5%;
+  border: 1px solid rgba(2, 117, 2, 0.363);
+  margin-top: 3.2%;
+  margin-bottom: 3.6%;
+  box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
+  margin-left: -4%;
+  border-radius: 50%;
+  background-color: rgb(255, 243, 240);
 }
 
 .replyContainer {
-    position: absolute;
-    margin-top: 4.5%;
-    width: 36.4%;
-    height: 3.9%;
-    margin-left: 5%;
+  position: absolute;
+  margin-top: 4.4%;
+  width: 36.4%;
+  height: 3.9%;
+  margin-left: 5%;
+  border-radius: 50%;
+}
+
+/* .replyAvatar { */
+/* border: 2px solid black;
+    margin-top: 2px;
+    position: inherit;    */
+
+/* } */
+
+/* .replyImg { */
+/* float: left;
+    border: 2px solid orange;
+    margin-right: 10px;
+    margin-bottom: 11px;
     border-radius: 50%;
+    height: 5vh;
+    width: auto; */
+/* } */
+.postBox {
+  display: flex;
+  border: 1px solid rgba(214, 97, 24, 0.945);
+  box-shadow: 3px 2px 2px grey;
+  padding: 2%;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: rgba(197, 194, 156, 0.226);
+}
+
+.avatarPic {
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgb(255, 166, 0);
+  width: 56px;
+  height: 56px;
+  margin-right: 10px;
+}
+
+.author {
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-left: 9.5%;
+  margin-top: -8%;
+}
+
+.created {
+  font-size: 12px;
+  color: gray;
+  margin-left: auto;
+  margin-top: -4%;
+}
+
+.textBox {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 9.5%;
+  word-wrap: break-word;
+}
+
+.divider {
+  width: 100%;
+  border-top: 1.5px solid rgb(179, 114, 67);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.createdAt {
+  font-size: 12px;
+  color: gray;
+  margin-left: auto;
+  margin-top: -4%;
+}
+
+.replyArea {
+  display: flex;
+  align-items: center;
+  margin-top: 8%;
+  margin-left: 60px;
+  padding: 1%;
+  border-radius: 4%;
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.62);
+  background-color: rgba(212, 95, 27, 0.075);
+}
+
+.daName {
+    margin-right: 2%;
+}
+
+.replyAvatar {
+  position: absolute;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin-right: 4%;
+  display: flex;
+  align-items: center;
+}
+
+.replyImg {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  margin-left: -130%;
+  position: relative;
+  border-right: 1px solid rgb(128, 17, 17);
+  box-shadow: -2px 1px 5px 2px rgba(0, 0, 0, 0.236);
+}
+
+.dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #555;
+  margin-right: 8px;
+  margin-left: 3%;
 }
 
 textarea {
-    resize: none;
-    width: 70%;
-    position: absolute;
-    margin-top: 4.8%;
+  resize: none;
+  width: 70%;
+  position: absolute;
+  margin-top: 4.8%;
 }
 
 .hide {
-    display: none;
-
+  display: none;
 }
 
 .show {
-    display: block;
-
+  display: block;
 }
 
-
-
 .bouncing {
-    transform: translateY(2px);
-    animation: bounce 0.1s ease-in-out;
-    object-fit: cover;
-    position: relative;
-    width: 3.4%;
-    height: 20.5%;
-    border: 1px solid rgba(2, 117, 2, 0.363);
-    margin-top: 4.5%;
-    box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
-    margin-left: 8%;
-    border-radius: 50%;
-    background-color: rgb(255, 243, 240);
+  transform: translateY(2px);
+  animation: bounce 0.1s ease-in-out;
+  object-fit: cover;
+  position: relative;
+  width: 3.4%;
+  height: 20.5%;
+  border: 1px solid rgba(2, 117, 2, 0.363);
+  margin-top: 4.5%;
+  box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
+  margin-left: 8%;
+  border-radius: 50%;
+  background-color: rgb(255, 243, 240);
 }
 
 @keyframes bounce {
-    0% {
-        transform: translateY(0);
-    }
-    25% {
-        transform: translateY(-4px);
-    }
-    50% {
-        transform: translateY(5);
-    }
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(5);
+  }
 }

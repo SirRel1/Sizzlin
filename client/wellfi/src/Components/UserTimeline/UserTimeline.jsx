@@ -12,7 +12,7 @@ import "./UserTimeline.css";
 
 export default function UserTimeline() {
   const { loading, error, data: postData } = useQuery(POST_QUERY);
-  console.log("Post data: ", postData)
+  console.log("Post data: ", postData);
   const [charCount, setCharCount] = useState(0);
   const [isReplyBoxShown, setIsReplyBoxShown] = useState(false);
   const [selectedPostId, setSelectedPostId] = useState(null);
@@ -22,12 +22,12 @@ export default function UserTimeline() {
     postId: "",
     userId: "",
     replyText: "",
-    username: ""
-    
+    username: "",
+    replyImg: "",
   });
 
   const { data } = Auth.getToken() ? Auth.getProfile() : "";
-  const user = Auth.getToken() ? data.username: "Guest";
+  const user = Auth.getToken() ? data.username : "Guest";
   const username = Auth.getToken() ? data.username : "Guest";
 
   const [addReply, { error: replyError }] = useMutation(ADD_REPLY);
@@ -56,20 +56,25 @@ export default function UserTimeline() {
   };
 
   const handleChange = (event, key) => {
-    console.log("Key: ", key)
+    console.log("Key: ", key);
     const { name, value } = event.target;
     setCharCount(event.target.value.length);
-    setAReply({ postId: key, userId: user, [name]: value, username: user });
+    setAReply({
+      postId: key,
+      userId: user,
+      [name]: value,
+      username: user,
+      replyImg: user,
+    });
   };
 
   const replyHandler = async (e) => {
-    
     try {
       const { data } = await addReply({
         variables: { ...aReply },
       });
       Auth.getToken(data);
-      window.location.reload("/timeline")
+      window.location.reload("/timeline");
     } catch (err) {
       console.error(err);
     }
@@ -80,7 +85,7 @@ export default function UserTimeline() {
   }
   // console.log("The post: ", thePost)
   return (
-    <div>
+    <div className="post-container">
       <b>Timeline</b>
       {postData.posts &&
         postData.posts
@@ -100,8 +105,22 @@ export default function UserTimeline() {
 
               <p className="created">{convertTimestamp(post.createdAt)}</p>
               <p className="textBox">{post.thePost}</p>
+              <hr className="divider" />
               {post.replies.map((replies) => (
-                <p>{replies.username} Said: {replies.replyText}</p>
+                <div className="replyArea">
+                  <b className="daName">{replies.username}: </b>{" "}
+                  {replies.replyText}
+                  <span class="dot"></span>
+                  <div className="createdAt">
+                    {convertTimestamp(replies.createdAt)}
+                  </div>
+                  <div className="replyAvatar">
+                    <img
+                      className="replyImg"
+                      src={replies.replyImg ? replies.replyImg : defaultProfile}
+                    />
+                  </div>
+                </div>
               ))}
               {Auth.getToken() && (
                 <div

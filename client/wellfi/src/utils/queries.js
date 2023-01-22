@@ -35,6 +35,8 @@ export const POST_QUERY = gql`
         replyText
         username
         userId
+        replyImg
+        createdAt
       }
     }
   }

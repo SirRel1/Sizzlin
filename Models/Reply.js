@@ -14,7 +14,10 @@ const replySchema = new Schema({
     required: true,
     ref: "Users",
   },
-  repliedAt: {
+  replyImg: {
+    type: String
+  },
+  createdAt: {
     type: Date,
     default: Date.now,
   },

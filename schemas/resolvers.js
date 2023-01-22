@@ -28,10 +28,10 @@ const resolvers = {
       return { newPost };
     },
     
-    addReply: async (_, { postId, userId, replyText, username}) => {
+    addReply: async (_, { postId, userId, replyText, username }) => {
       // const theId = await User.findOne({ _id: userId });
       // const replies = await Post.findById({_id: postId });
-      const user_Id = await User.findOne({userId})
+      const user_Id = await User.findOne({username: userId})
       const currentTime = new Date().getTime();
       
       console.log(currentTime)
@@ -39,7 +39,8 @@ const resolvers = {
          userId: user_Id._id,
          username,
          replyText,
-         repliedAt: currentTime
+         replyImg: user_Id.profileImg,
+         createdAt: currentTime
       });
 
       const postReply = await Post.findOneAndUpdate(

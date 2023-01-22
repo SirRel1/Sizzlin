@@ -36,12 +36,13 @@ export const ADD_POST = gql`
 `;
 
 export const ADD_REPLY = gql`
-  mutation Mutation($postId: ID!, $userId: ID!, $username: String!, $replyText: String!) {
-    addReply(postId: $postId, userId: $userId, username: $username, replyText: $replyText) {
+  mutation Mutation($postId: ID!, $userId: ID!, $username: String!, $replyText: String!, $replyImg: String!) {
+    addReply(postId: $postId, userId: $userId, username: $username, replyText: $replyText, replyImg: $replyImg) {
       postId
       userId
       username
       replyText
+      replyImg
     }
   }
 `;
