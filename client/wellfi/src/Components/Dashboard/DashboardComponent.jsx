@@ -29,7 +29,7 @@ export default function DashboardComponent() {
 
     <Navbar sticky="top" className="navColor" variant="light" expand="lg">
       <Navbar.Brand href="/" className="brand sizzling-text">
-        A R E A - S i Z Z L i N .
+         S i Z Z L i N .
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">

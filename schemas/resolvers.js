@@ -50,6 +50,15 @@ const resolvers = {
       return { ...postReply };
     },
 
+    addLikes : async (_, { post, username }) => {
+      const likedPost = await Post.findOneAndUpdate(
+        { _id: post },
+        { $inc: { postLikes: 1 }, $push: { likedBy: username } }
+      );
+      return { likedPost }
+    },
+    
+
     User: {
       posts: async(user,{userId}) => {
         const thePost = await Post.find({ userId });

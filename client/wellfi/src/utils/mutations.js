@@ -46,3 +46,13 @@ export const ADD_REPLY = gql`
     }
   }
 `;
+
+export const ADD_LIKES = gql`
+  mutation Mutation($post: ID!, $username: String!) {
+    addLikes(post: $post, username: $username) {
+      username
+      likedBy
+      postLikes
+    }
+  }
+`;

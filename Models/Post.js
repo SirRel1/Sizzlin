@@ -25,11 +25,20 @@ const postSchema = new Schema(
       type: String,
     },
 
-    replies: 
-      [{type: mongoose.Types.ObjectId,
-      ref: "Reply"}]
-    ,
+    postLikes: {
+      type: Number,
+      default: 0
+    },
 
+    likedBy: [
+      {
+        type: String,
+        required: true,
+        ref: "Users",
+      },
+    ],
+
+    replies: [{ type: mongoose.Types.ObjectId, ref: "Reply" }],
     createdAt: {
       type: Date,
       default: Date.now,
@@ -45,6 +54,5 @@ const postSchema = new Schema(
 );
 
 const Post = model("Posts", postSchema);
-
 
 module.exports = Post;

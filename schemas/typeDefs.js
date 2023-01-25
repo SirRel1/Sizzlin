@@ -16,6 +16,8 @@ const typeDefs = gql`
     thePost: String!
     replies: [Reply]
     profileImg: String
+    postLikes: Int
+    likedBy: [String]
     createdAt: String
   }
   
@@ -42,10 +44,12 @@ const typeDefs = gql`
     post(id: ID!): Post
     reply(id: ID!): Reply
   }
+  
 
   type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     addPost(userId: ID!, username: String!, thePost: String!): Post
+    addLikes(post: ID!, username: String!): Post
     addReply(userId: ID!, postId: ID! username: String!, replyText: String!, replyImg: String!): Reply
     Post(_id: ID!, userId: ID!, thePosts: String!): Post
     Reply(_id: ID!, userId: ID!, replyText: String): Reply

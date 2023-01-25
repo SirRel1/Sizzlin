@@ -31,6 +31,8 @@ export const POST_QUERY = gql`
       thePost
       profileImg
       createdAt
+      postLikes
+      likedBy
       replies {
         replyText
         username
