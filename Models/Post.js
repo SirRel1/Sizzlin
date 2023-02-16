@@ -18,7 +18,7 @@ const postSchema = new Schema(
       required: true,
       unique: false,
       trim: true,
-      maxlength: 150,
+      maxlength: 300,
     },
 
     profileImage: {
@@ -29,8 +29,20 @@ const postSchema = new Schema(
       type: Number,
       default: 0
     },
+    
+    postFaves: {
+      type: Number,
+      default: 0
+    },
 
     likedBy: [
+      {
+        type: String,
+        required: true,
+        ref: "Users",
+      },
+    ],
+    favedBy: [
       {
         type: String,
         required: true,

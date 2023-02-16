@@ -20,6 +20,7 @@ const URL = "/images";
 
 export default function ProfileComponent() {
   // const token = sessionStorage.getItem("token");
+  let { clientId } = useParams();
  
   const [ refetch, setRefetch ] = useState(0);
   
@@ -35,35 +36,22 @@ export default function ProfileComponent() {
     error: fetchError,
   } = useQueryAgain(URL, refetch);
 
-  const { data } = Auth.getProfile();
-  const user = data.username;
-  const username = data.username;
+  const { data } = Auth.getToken() ? Auth.getProfile() : "";
+  const user = Auth.getToken() ? data.username : "Guest";
+  // const username = data.username;
 
   
-   const { loading, error: postError, data: postData } = useQuery(USERPOST_QUERY, {
-     variables: { username }
+   const { loading, error: postError, data: postData, refetch: postRefetch } = useQuery(USERPOST_QUERY, {
+     variables: { username: clientId }
    });
+
   //  debug querying and resolver to load user post!
    if (loading) return <p>Loading...</p>;
-   if (postError) return `<p>Error : ${postError}</p>`;
-  //  console.log("Post data: ", postData.user.posts[0].thePost);
-
-  // const { loading, data }  = useQuery(userId ? CURRENT_USER : QUERY_ME, {
-  //     variables: { userId: userId }
-  // });
-
-  // const profile = data?.user || data?.user || {};
-
-  // if (Auth.loggedIn() && Auth.getProfile().data._id === userId) {
-  //     return <div>HomeComponent</div> ;
-  //   }
-  // const updateProfileStatus = () => {
-  //   const [status, setStatus] = useState("What's Cookin...");
-  // };
-
+   if (postError) {
+     postRefetch();
+     return <div>Error: Refreshing...</div>;
+   }
  
-
-  
 
   const fileSelectedHandler = async (e) => {
     // const [ error, setError ] = useState("");
@@ -81,12 +69,13 @@ export default function ProfileComponent() {
     await uploadImage(form);
     setTimeout(() => {
       setRefetch((s) => s + 1);
-    }, 1000);
+      window.location.reload("/profile")
+    }, 4000);
   };
 
   return (
     <div className="profileSection">
-      <PostInput user={user} />
+      {clientId === user ? <PostInput user={user} /> : ""}
       <Card style={{ width: "18rem" }}>
         <input
           id="imageInput"
@@ -94,23 +83,21 @@ export default function ProfileComponent() {
           hidden
           onChange={fileSelectedHandler}
         />
-
+        ...
         <Card.Img
           variant="top"
           src={
-            imageUrls && imageUrls.length
-              ? imageUrls.slice(0, 1)[0]
+            postData.user.profileImg !== "No proifle photo yet"
+              ? postData.user.profileImg
               : defaultProfile
           }
           className="rounded-circle"
         />
-
         <Card.Body>
-          <Card.Title>{user}</Card.Title>
+          <Card.Title>{clientId}</Card.Title>
           <Button
             as="label"
             htmlFor="imageInput"
-            colorScheme="blue"
             variant="outline"
             mb={4}
             cursor="pointer"
@@ -118,12 +105,15 @@ export default function ProfileComponent() {
           >
             Upload
           </Button>
-          <Card.Text>Some profile information goes here</Card.Text>
+          <Card.Text>
+            Some profile information goes here{JSON.stringify(clientId)}
+          </Card.Text>
         </Card.Body>
       </Card>
 
-      {!loading && postData.user.posts &&
-        postData.user.posts.map((post) => <p>{post.thePost}</p>)}
+      {!loading &&
+        postData.user.posts &&
+        postData.user.posts.map((post) => <p>{post.thePost}</p>).reverse()}
     </div>
   );
 }

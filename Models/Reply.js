@@ -15,8 +15,19 @@ const replySchema = new Schema({
     ref: "Users",
   },
   replyImg: {
-    type: String
+    type: String,
   },
+  replyLikes: {
+    type: Number,
+    default: 0,
+  },
+  replyLikedBy: [
+    {
+      type: String,
+      required: true,
+      ref: "Users",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

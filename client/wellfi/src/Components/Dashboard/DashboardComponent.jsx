@@ -1,5 +1,6 @@
 import Auth from "../../utils/auth";
 import { useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
 import {
   Alert,
@@ -16,6 +17,7 @@ import {
 import { useQueryAgain } from "../../hooks/useQuery2";
 import navProfile from "../../Images/profileImg.png";
 import timeline from "../../Images/timelineImg.png";
+import { USERPOST_QUERY } from "../../utils/queries";
 import "./Dashboard.css";
 
 export default function DashboardComponent() {
@@ -24,19 +26,53 @@ export default function DashboardComponent() {
     window.location.replace("/");
   }
 
+  const { data } = Auth.getToken() ? Auth.getProfile() : "";
+  const user = Auth.getToken() ? data.username : "Guest";
+  let dashImg = "";
+
+  if (user !== "Guest") {
+    const {
+      loading,
+      error: postError,
+      data: postData,
+      refetch,
+    } = useQuery(USERPOST_QUERY, {
+      variables: { username: user },
+    });
+
+    if (loading) return <p>Loading...</p>;
+    if (postError) {
+      refetch();
+      return <div>Error: Refreshing...</div>;
+    }
+
+    dashImg = Auth.getToken() ? postData.user.profileImg : "";
+  } else {
+  }
+
   return (
     // <Container fluid>
 
     <Navbar sticky="top" className="navColor" variant="light" expand="lg">
       <Navbar.Brand href="/" className="brand sizzling-text">
-         S i Z Z L i N .
+        S i Z Z L i N .
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto1">
-          <Nav.Link href="/profile" className="options">
+          <Nav.Link
+            href={`/profile/${JSON.stringify(user).replace(/['"]/g, "")}`}
+            className="options"
+          >
             {Auth.loggedIn() ? (
-              <img className="dashIcon" src={navProfile} />
+              <img
+                className="dashIcon"
+                src={
+                  user !== "Guest" && dashImg !== "No proifle photo yet"
+                    ? dashImg
+                    : navProfile
+                }
+              />
             ) : (
               ""
             )}

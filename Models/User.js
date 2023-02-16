@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, mongoose } = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcrypt");
@@ -7,7 +7,7 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: false,
+      required: true,
       unique: true,
       trim: true,
       minlength: 3,
@@ -27,9 +27,23 @@ const userSchema = new Schema(
     profileImg: {
       type: String,
       required: false,
-      default: "No proifle photo yet"
-    }
+      default: "No proifle photo yet",
+    },
 
+    followers: [{
+      type: String,
+      required: false,
+      default: ["No followers yet"],
+      ref: "Users",
+    }],
+    
+    following: 
+      [{type: String,
+      required: false,
+      default: ["Not following anyone yet"],
+      ref: "Users"}],
+    
+    faves: [{ type: mongoose.Types.ObjectId, ref: "Post" }],
   },
 
   {

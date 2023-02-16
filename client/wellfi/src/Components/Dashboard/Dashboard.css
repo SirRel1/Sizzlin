@@ -15,8 +15,8 @@
   visibility: visible;
   padding: 1px;
   font-size: 12px;
-  height: 5vh;
-  width: 111%;
+  height: 50px;
+  width: 50px;
   border: 2px solid rgb(147, 5, 5);
   margin-left: 3px;
   position: right;
@@ -24,6 +24,7 @@
   object-fit: cover;
   background: #fff;
   transition: all 0.2s ease;
+  overflow: hidden;
 }
 
 .timeIcon {
@@ -31,10 +32,10 @@
   visibility: visible;
   padding: 1px;
   font-size: 12px;
-  height: 5vh;
-  width: 111%;
+  height: 50px;
+  width: 50px;
   border: 2px solid rgb(147, 5, 5);
-  margin-left: 3px;
+  margin-left: 2px;
   position: right;
   border-radius: 50%;
   object-fit: cover;
@@ -44,7 +45,7 @@
 
 .me-auto1 {
   position: absolute;
-  right: 7%;
+  right: 12%;
 }
 
 .link {
@@ -55,6 +56,8 @@
 }
 
 .navColor{
+   padding-left: 12%;
+   padding-right: 10%;
     background-color: rgb(255, 166, 0) !important;;
 }
 

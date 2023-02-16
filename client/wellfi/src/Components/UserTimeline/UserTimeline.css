@@ -3,6 +3,42 @@
   margin: 0 auto; /* centers the elements horizontally */
 }
 
+.side-panel {
+  position: fixed;
+  top: 80px;
+  left: 242px;
+  bottom: 444px;
+  width: 18%;
+  background-color: #b82222ed;
+  border-radius: 14px;
+  padding: 1rem;
+  scrollbar-width: thin !important;
+  scrollbar-color: #ccc #fff;
+  box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.15);
+  /* overflow-y: scroll; */
+}
+
+.right-side-panel {
+  position: fixed;
+  top: 80px;
+  right: 242px;
+  bottom: 444px;
+  width: 18%;
+  background-color: #b82222ed;
+  border-radius: 14px;
+  padding: 1rem;
+  scrollbar-width: thin !important;
+  scrollbar-color: #ccc #fff;
+  box-shadow: 2px 2px 2px 4px rgba(14, 11, 11, 0.15);
+  /* overflow-y: scroll; */
+}
+
+.side-panel::-moz-scrollbar {
+    width: 0;
+    height: 0;
+    background-color: transparent;
+}
+
 /* .avatarPic {
   float: left;
   margin-right: 0.4%;
@@ -68,38 +104,111 @@
 /* margin-left: 4%; */
 /* } */
 .replyBubble {
-  object-fit: cover;
+  background-image: linear-gradient(
+    to top,
+    rgb(255, 166, 0),
+    rgba(189, 28, 28, 0.771)
+  );
+  object-fit: contain;
   position: absolute;
-  width: 3.4%;
-  height: 60.5%;
+  padding: 1px;
+  width: 3.9%;
+  height: 62% !important;
   border: 1px solid rgba(2, 117, 2, 0.363);
-  margin-top: 3.2%;
-  margin-bottom: 3.6%;
-  box-shadow: 1px 2px 3px 1px rgb(153, 95, 24);
-  margin-left: -4%;
-  border-radius: 50%;
+  margin-top: 4.3% !important; 
+  /* margin-bottom: 3.6%; */
+  box-shadow: 1px 2px 3px 1px rgba(153, 95, 24, 0.531);
+  margin-left: 7%;
+  border-radius: 23%;
   background-color: rgb(255, 243, 240);
 }
 
 .emptyHeart {
-    height: 22px;
-    position: absolute;
-    margin-left: 11%;
-    margin-top: 3.2%;
+  height: 20px;
+  position: absolute;
+  margin-left: 11%;
+  margin-top: 4.6% !important; 
+}
+
+.filledHeart {
+  background-image: linear-gradient(
+    to top,
+    rgb(255, 166, 0),
+    rgba(189, 28, 28, 0.771)
+  );
+  grid-column: 3 / 4;
+  height: 21px;
+  position: absolute;
+  box-shadow: 1px 1px 6px 1px rgba(244, 24, 24, 0.664);
+  padding: 0.4%;
+  border-radius: 23%;
+  margin-left: 11%;
+}
+
+.filledFave {
+  background-image: linear-gradient(
+    to top,
+    rgb(255, 166, 0),
+    rgba(189, 28, 28, 0.771)
+  );
+  grid-column: 4 / 5;
+  margin: 23px 0px 0px 56px !important;
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  box-shadow: 1px 1px 6px 1px rgba(244, 24, 24, 0.664);
+  padding: 0.3%;
+  border-radius: 23%;
+  margin-left: 282%;
+  margin-bottom: 500%;
+}
+
+.faveIcon {
+  height: 26px;
+  margin: 20px 0px 0px 56px !important;
+  position: absolute;
+  margin-left: 315%;
+}
+
+.replyBubble,
+.emptyHeart,
+.filledHeart,
+.filledFave,
+.faveIcon {
+  position: relative; /*changes position to be relative to the nearest positioned ancestor */
+  left: 0; /* sets the left position to 0 */
+  right: 0; /* sets the right position to 0 */
+  bottom: 0;
+  margin-top: 4.5%;
 }
 
 .count {
-    position: absolute;
-    margin-left: 15%;
-    margin-top: 3.2%;
+  position: absolute;
+  width: 46px;
+  margin-left: 27%;
+  margin-top: 4.3%;
+  margin-right: -40px !important;
+  z-index: 1;
+}
+
+.faveCount {
+  position: absolute;
+  width: 46px;
+  margin-left: 42%;
+  margin-top: 4.3% !important;
+  margin-right: -2px !important;
+  z-index: 1;
 }
 
 .replyContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   position: absolute;
   margin-top: 4.4%;
-  width: 36.4%;
+  width: 28.4%;
   height: 3.9%;
-  margin-left: 5%;
+  margin-left: 2%;
   border-radius: 50%;
 }
 
@@ -127,7 +236,7 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 33px;
   background-color: rgba(197, 194, 156, 0.226);
 }
 
@@ -142,10 +251,26 @@
 
 .author {
   font-weight: bold;
-  margin-bottom: 5px;
-  margin-left: 9.5%;
-  margin-top: -8%;
+  margin-bottom: 5px !important;
+  margin-left: 9.5% !important;
+  margin-top: -8% !important;
 }
+
+.follow {
+  position: absolute;
+  right: 623px;
+  margin-top: -18px;
+  height: 26px;
+  padding: 4px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.follow:hover {
+  transform: translateY(-2px);
+  background-color: rgba(255, 174, 0, 0.253);
+  
+}
+
 
 .created {
   font-size: 12px;
@@ -156,23 +281,46 @@
 
 .textBox {
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 44px;
   margin-left: 9.5%;
   word-wrap: break-word;
 }
 
+.send-button {
+  background-color: transparent;
+  border: none;
+  color: rgb(151, 33, 33);
+  font-size: 4.2em;
+  margin-left: 48%;
+  cursor: pointer;
+}
+
+.send-button:before {
+  content: "";
+  width: 18px;
+  right: -10px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgb(238, 164, 16);
+  display: inline-block;
+  margin-right: 8px;
+  transform: rotate(270deg);
+}
+
 .divider {
+  position: absolute;
+  display: flex;
   width: 100%;
   border-top: 1.5px solid rgb(179, 114, 67);
-  margin-top: 1rem;
+  margin-top: 1.2rem;
   margin-bottom: 1rem;
 }
 
 .createdAt {
-  font-size: 12px;
+  font-size: 10px;
   color: gray;
   margin-left: auto;
-  margin-top: -4%;
+  margin-top: -2%;
 }
 
 .replyArea {
@@ -187,22 +335,22 @@
 }
 
 .daName {
-    margin-right: 2%;
+  margin-right: 2%;
 }
 
 .replyAvatar {
   position: absolute;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 41px !important;
+  height: 33px !important;
   margin-right: 4%;
   display: flex;
   align-items: center;
 }
 
 .replyImg {
-  width: 100%;
-  height: 100%;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   margin-left: -130%;
   position: relative;
@@ -222,9 +370,11 @@
 
 textarea {
   resize: none;
-  width: 70%;
+  width: 82%;
   position: absolute;
-  margin-top: 4.8%;
+  margin-top: 8.8%;
+  margin-left: 11%;
+  border-radius: 7%;
 }
 
 .hide {
@@ -233,10 +383,10 @@ textarea {
 
 .show {
   display: block;
+  background-color: rgba(255, 162, 0, 0.147);
 }
 
 .bouncing {
-  transform: translateY(2px);
   animation: bounce 0.1s ease-in-out;
   object-fit: cover;
   position: relative;
@@ -265,65 +415,65 @@ textarea {
 /* Media query for cellphone screen */
 
 @media only screen and (max-width: 720px) {
-.postBox {
-width: 80%;
-margin: 0 auto;
-text-align: center;
-}
+  .postBox {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
 
-.avatarPic {
-width: 30%;
-height: 30%;
-margin-right: 5%;
-}
+  .avatarPic {
+    width: 30%;
+    height: 30%;
+    margin-right: 5%;
+  }
 
-.author {
-font-size: 1.2rem;
-}
+  .author {
+    font-size: 1.2rem;
+  }
 
-.created {
-font-size: 0.8rem;
-}
+  .created {
+    font-size: 0.8rem;
+  }
 
-.textBox {
-font-size: 1rem;
-}
+  .textBox {
+    font-size: 1rem;
+  }
 
-.replyContainer {
-width: 80%;
-margin: 0 auto;
-text-align: center;
-}
+  .replyContainer {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
 
-.replyBubble {
-width: 5%;
-height: 5%;
-}
+  .replyBubble {
+    width: 5%;
+    height: 5%;
+  }
 
-.show {
-width: 80%;
-margin: 0 auto;
-}
+  .show {
+    width: 80%;
+    margin: 0 auto;
+  }
 
-.send-button {
-width: 20%;
-font-size: 0.8rem;
-}
+  .send-button {
+    width: 20%;
+    font-size: 0.8rem;
+  }
 
-.replyArea {
-width: 80%;
-margin: 0 auto;
-text-align: center;
-font-size: 0.8rem;
-}
+  .replyArea {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.8rem;
+  }
 
-.replyImg {
-width: 20%;
-height: 20%;
-}
+  .replyImg {
+    width: 20%;
+    height: 20%;
+  }
 
-.replyAvatar {
-width: 20%;
-margin-right: 5%;
-}
+  .replyAvatar {
+    width: 20%;
+    margin-right: 5%;
+  }
 }

@@ -11,12 +11,9 @@ export default function PostInput({user}) {
 
     const [status, setStatus] = useState("");
     const [charCount, setCharCount] = useState(0);
-    const countClass = charCount > 312 ? "exceeded" : "";
+    const countClass = charCount > 312 ? "exceeded" : "counting";
 
-    // const { data } = Auth.getProfile();
-    // const user = data.username;
-
-    const [addPost, { error }] = useMutation(ADD_POST);
+    const [addPost, { loading, error }] = useMutation(ADD_POST);
 
     const [aPost, setAPost] = useState({
       userId: "",
@@ -42,7 +39,7 @@ export default function PostInput({user}) {
 
        setTimeout(() => {
          setStatus("");
-       }, 3000);
+       }, 1000);
      };
 
     
@@ -62,7 +59,7 @@ export default function PostInput({user}) {
       <button
         className="statusButton"
         onClick={postHandler}
-        disabled={charCount > 313 || charCount < 1}
+        disabled={charCount > 313 || charCount < 1 || loading}
       >
         Update Status
       </button>

@@ -56,3 +56,51 @@ export const ADD_LIKES = gql`
     }
   }
 `;
+
+export const SUB_LIKES = gql`
+  mutation Mutation($post: ID!, $username: String!) {
+    removeLikes(post: $post, username: $username) {
+      username
+      likedBy
+      postLikes
+    }
+  }
+`;
+
+export const ADD_FAVE = gql`
+  mutation Mutation($post: ID!, $username: String!) {
+    addFaves(post: $post, username: $username) {
+      username
+      favedBy
+      
+    }
+  }
+`;
+
+export const REMOVE_FAVE = gql`
+  mutation Mutation($post: ID!, $username: String!) {
+    removeFaves(post: $post, username: $username) {
+      username
+      favedBy
+      
+    }
+  }
+`;
+
+export const ADD_FOLLOW = gql`
+  mutation Mutation($following: String!, $username: String!) {
+    addFollow(following: $following, username: $username) {
+      username
+      following
+    }
+  }
+`;
+
+export const REMOVE_FOLLOW = gql`
+  mutation Mutation($following: String!, $username: String!) {
+    unFollow(following: $following, username: $username) {
+      username
+      following
+    }
+  }
+`;

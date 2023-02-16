@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import LoginComponent from "./Components/Login/LoginComponent";
 import DashboardComponent from "./Components/Dashboard/DashboardComponent";
@@ -20,6 +25,7 @@ const client = new ApolloClient({
   link
 });
 
+
 function App() {
   return (
     <React.Fragment>
@@ -27,11 +33,12 @@ function App() {
       <Router>
         <DashboardComponent />
         <Routes>
+          
           <Route exact path="/" element={<HomeComponent />} />
           <Route path="/login" element={<LoginComponent />} />
           <Route path="/new" element={<New />} />
           <Route path="/register" element={<RegisterComponent />} />
-          <Route path="/profile" element={<ProfileComponent theUser={client} />} />
+          <Route path="/profile/:clientId" element={<ProfileComponent theUser={client} />} />
           <Route path="/timeline" element={<UserTimeline user={client} />} />
         </Routes>
       </Router>

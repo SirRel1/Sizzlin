@@ -33,6 +33,7 @@ export const POST_QUERY = gql`
       createdAt
       postLikes
       likedBy
+      favedBy
       replies {
         replyText
         username
@@ -49,6 +50,10 @@ export const USERPOST_QUERY = gql`
     user(username: $username) {
       username
       email
+      faves 
+      following 
+      followers
+      profileImg
       posts {
         _id
         thePost
