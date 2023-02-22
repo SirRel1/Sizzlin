@@ -19,6 +19,7 @@
   width: 50px;
   border: 2px solid rgb(147, 5, 5);
   margin-left: 3px;
+  margin-right: 8px;
   position: right;
   border-radius: 50%;
   object-fit: cover;
@@ -35,7 +36,7 @@
   height: 50px;
   width: 50px;
   border: 2px solid rgb(147, 5, 5);
-  margin-left: 2px;
+  margin-left: 3px;
   position: right;
   border-radius: 50%;
   object-fit: cover;

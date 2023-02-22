@@ -35,11 +35,14 @@ export const POST_QUERY = gql`
       likedBy
       favedBy
       replies {
+        _id
         replyText
         username
         userId
         replyImg
         createdAt
+        replyLikedBy
+        replyLikes
       }
     }
   }

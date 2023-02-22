@@ -17,6 +17,7 @@ import {
 import { useQueryAgain } from "../../hooks/useQuery2";
 import navProfile from "../../Images/profileImg.png";
 import timeline from "../../Images/timelineImg.png";
+import notificationImg from "../../Images/notificationsImg.png";
 import { USERPOST_QUERY } from "../../utils/queries";
 import "./Dashboard.css";
 
@@ -77,6 +78,18 @@ export default function DashboardComponent() {
               ""
             )}
           </Nav.Link>
+          {/* Set navigation to Notifications for each user on login */}
+          <Nav.Link
+            href={`/profile/${JSON.stringify(user).replace(/['"]/g, "")}`}
+            className="options"
+          >
+            {Auth.loggedIn() ? (
+              <img className="dashIcon" src={notificationImg} />
+            ) : (
+              ""
+            )}
+          </Nav.Link>
+
           <Nav.Link href="/timeline" className="options">
             <img className="timeIcon" src={timeline} />
           </Nav.Link>

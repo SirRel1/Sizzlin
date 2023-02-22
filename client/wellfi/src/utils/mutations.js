@@ -67,6 +67,26 @@ export const SUB_LIKES = gql`
   }
 `;
 
+export const ADD_COMMENT_LIKES = gql`
+  mutation Mutation($reply: ID!, $username: String!) {
+    addCommentLikes(reply: $reply, username: $username) {
+      username
+      replyLikedBy
+      replyLikes
+    }
+  }
+`;
+
+export const REMOVE_COMMENT_LIKES = gql`
+  mutation Mutation($reply: ID!, $username: String!) {
+    removeCommentLikes(reply: $reply, username: $username) {
+      username
+      replyLikedBy
+      replyLikes
+    }
+  }
+`;
+
 export const ADD_FAVE = gql`
   mutation Mutation($post: ID!, $username: String!) {
     addFaves(post: $post, username: $username) {

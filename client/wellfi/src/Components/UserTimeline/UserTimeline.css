@@ -259,6 +259,7 @@
 .follow {
   position: absolute;
   right: 623px;
+  border-radius: 10px;
   margin-top: -18px;
   height: 26px;
   padding: 4px;
@@ -333,6 +334,38 @@
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.62);
   background-color: rgba(212, 95, 27, 0.075);
 }
+
+.like-btn {
+  border-radius: 10px;
+  background-color: rgba(151, 33, 33, 0.774);;
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  margin-top: -30px;
+  margin-right: -40px;
+}
+
+.reply-btn {
+  border-radius: 10px;
+  
+  background-color: rgba(0, 128, 0, 0.555);
+  color: rgb(0, 0, 0);
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  margin-top: 20px;
+}
+
+.like-btn:hover, .reply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 1px 2px 5px 1px rgba(237, 130, 23, 0.517);
+}
+
+.hidden {
+  display: none;
+}
+
 
 .daName {
   margin-right: 2%;

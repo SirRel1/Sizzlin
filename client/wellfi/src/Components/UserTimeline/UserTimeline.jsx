@@ -6,7 +6,9 @@ import { POST_QUERY } from "../../utils/queries";
 import { USERPOST_QUERY } from "../../utils/queries";
 import { ADD_REPLY } from "../../utils/mutations";
 import { ADD_LIKES } from "../../utils/mutations";
+import { ADD_COMMENT_LIKES } from "../../utils/mutations";
 import { SUB_LIKES } from "../../utils/mutations";
+import { REMOVE_COMMENT_LIKES } from "../../utils/mutations";
 import { ADD_FAVE } from "../../utils/mutations";
 import { ADD_FOLLOW } from "../../utils/mutations";
 import { REMOVE_FOLLOW } from "../../utils/mutations";
@@ -31,7 +33,7 @@ export default function UserTimeline({ client }) {
     data: postData,
     refetch,
   } = useQuery(POST_QUERY, { client });
-  
+
   const { data } = Auth.getToken() ? Auth.getProfile() : "";
   const user = Auth.getToken() ? data.username : "Guest";
   const username1 = Auth.getToken() ? data.username : "Guest";
@@ -41,7 +43,7 @@ export default function UserTimeline({ client }) {
     error: userError,
     data: userData,
     refetch: userRefetch,
-  } = useQuery(USERPOST_QUERY,  { variables: { username: username1 }});
+  } = useQuery(USERPOST_QUERY, { variables: { username: username1 } });
 
   const [charCount, setCharCount] = useState(0);
   const [isReplyBoxShown, setIsReplyBoxShown] = useState(false);
@@ -61,7 +63,7 @@ export default function UserTimeline({ client }) {
   });
   const [follow, setFollow] = useState({
     username: "",
-    followedUser: ""
+    followedUser: "",
   });
   const [aReply, setAReply] = useState({
     post: "",
@@ -73,27 +75,38 @@ export default function UserTimeline({ client }) {
   });
   // This effect runs everytime that postData has a new payload for rerender
 
-
   const [addReply, { error: replyError }] = useMutation(ADD_REPLY);
   const [addLikes, { error: likeError }] = useMutation(ADD_LIKES, {
     refetchQueries: [{ query: POST_QUERY }],
   });
+  
+  const [addCommentLikes, { error: commentlikeError }] = useMutation(ADD_COMMENT_LIKES, {
+    refetchQueries: [{ query: POST_QUERY }],
+  });
+
   const [removeLikes, { error: removeLikeError }] = useMutation(SUB_LIKES, {
     refetchQueries: [{ query: POST_QUERY }],
   });
+  
+  const [removeCommentLikes, { error: removeCommentLikeError }] = useMutation(
+    REMOVE_COMMENT_LIKES,
+    {
+      refetchQueries: [{ query: POST_QUERY }],
+    }
+  );
 
   const [addFollow, { error: followError }] = useMutation(ADD_FOLLOW, {
     refetchQueries: [{ query: POST_QUERY }],
   });
-  
+
   const [unFollow, { error: unfollowError }] = useMutation(REMOVE_FOLLOW, {
     refetchQueries: [{ query: POST_QUERY }],
   });
-  
+
   const [addFaves, { error: faveError }] = useMutation(ADD_FAVE, {
     refetchQueries: [{ query: POST_QUERY }],
   });
-  
+
   const [removeFaves, { error: removeFaveError }] = useMutation(REMOVE_FAVE, {
     refetchQueries: [{ query: POST_QUERY }],
   });
@@ -103,6 +116,12 @@ export default function UserTimeline({ client }) {
       refetch();
     }
   }, [addReply.data]);
+
+  useEffect(() => {
+    if (addFaves.data) {
+      userRefetch();
+    }
+  }, [addFaves.data]);
 
   useEffect(() => {
     if (postLikes) {
@@ -177,7 +196,7 @@ export default function UserTimeline({ client }) {
       console.error(err);
     }
   };
- 
+
   async function faveHandler(id) {
     let thefavedPost = postData.posts.filter((post) => post._id === id);
     let clickedFave = thefavedPost[0].favedBy.includes(username1);
@@ -186,7 +205,7 @@ export default function UserTimeline({ client }) {
       username: user,
     });
     if (!clickedFave) {
-      console.log("Fave clicked: ", clickedFave);
+      
       try {
         const { data } = await addFaves({
           variables: { post: id, username: username1 },
@@ -199,7 +218,7 @@ export default function UserTimeline({ client }) {
         console.error(err);
       }
     } else {
-      console.log("Fave unclicked: ", clickedFave);
+    
       try {
         const { data } = await removeFaves({
           variables: { post: id, username: username1 },
@@ -252,19 +271,60 @@ export default function UserTimeline({ client }) {
       }
     }
   }
-// Finish logic for setting new icon once user follows and persist data to mongo
+
+  async function commentHandler(id, e) {
+    let theLikedComment = e.target.id;
+    let theCommentLiked = false;
+    for (let i = 0; i < postData.posts.length; i++) {
+        let allPost = postData.posts[i];
+        let postReplies = allPost.replies.filter((replies, i) =>
+          replies._id.includes(id)
+        );
+        console.log("post replies: ", postReplies);
+        if(postReplies.length > 0 && postReplies) {
+         theCommentLiked = postReplies[0].replyLikedBy.includes(username1);
+         break
+        } else {
+          theCommentLiked = false;
+        } 
+    }
+
+    if (!theCommentLiked) {
+      try {
+        const { data } = await addCommentLikes({
+          variables: { reply: id, username: username1 },
+        });
+
+        Auth.getToken(data);
+        // setPostLikes(postLikes + 1);
+        await refetch();
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      try {
+        const { data } = await removeCommentLikes({
+          variables: { reply: id, username: username1 },
+        });
+
+        Auth.getToken(data);
+        await refetch();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+  // Finish logic for setting new icon once user follows and persist data to mongo
   async function followHandler(user) {
     let thefollowedUser = await userData;
-    // let clickedFollow = thefollowedUser;
+    let clickedFollow = thefollowedUser.user.following.includes(user);
+
     setFollow({
       username: username1,
-      following: user
+      following: user,
     });
-    setTimeout(() => {
-    console.log("Following...:", thefollowedUser);
-    }, 3000)
-    // if (!clickedFollow) {
-    //   console.log("Fave clicked: ", clickedFollow);
+
+    if (!clickedFollow) {
       try {
         const { data } = await addFollow({
           variables: { following: user, username: username1 },
@@ -272,25 +332,39 @@ export default function UserTimeline({ client }) {
 
         Auth.getToken(data);
 
-        await refetch();
+        await userRefetch();
       } catch (err) {
         console.error(err);
       }
-    // } else {
-    //   console.log("Fave unclicked: ", clickedFollow);
-    //   try {
-    //     const { data } = await unFollow({
-    //       variables: { following: user, username: username1 },
-    //     });
+    } else {
+      try {
+        const { data } = await unFollow({
+          variables: { following: user, username: username1 },
+        });
 
-    //     Auth.getToken(data);
+        Auth.getToken(data);
 
-    //     await refetch();
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // }
+        await userRefetch();
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
+
+  function showReplyHandler(id, e) {
+    const { lastChild } = e.target;
+    
+        if (lastChild.id === id) {
+          const { childNodes } = e.target;
+          childNodes[6].classList.toggle("hidden");
+          childNodes[7].classList.toggle("hidden");
+          
+        }
+       
+  
+    }
+    
+  
 
   function convertTimestamp(timestamp) {
     return moment(timestamp * 1).fromNow();
@@ -329,11 +403,18 @@ export default function UserTimeline({ client }) {
               </Link>
               <p className="author">
                 <b>{post.username}</b>
-                <img
-                  className="follow"
-                  src={Auth.getToken() && followIcon}
-                  onClick={() => followHandler(post.username)}
-                />
+                {Auth.getToken() && (
+                  <img
+                    className="follow"
+                    src={
+                      followIcon &&
+                      !userData.user.following.includes(post.username)
+                        ? followIcon
+                        : followingIcon
+                    }
+                    onClick={() => followHandler(post.username)}
+                  />
+                )}
               </p>
 
               <p className="created">{convertTimestamp(post.createdAt)}</p>
@@ -341,7 +422,10 @@ export default function UserTimeline({ client }) {
 
               {post.replies
                 .map((replies) => (
-                  <div className="replyArea">
+                  <div
+                    className="replyArea"
+                    onClick={(e) => showReplyHandler(replies._id, e)}
+                  >
                     <b className="daName">{replies.username}: </b>{" "}
                     {replies.replyText}
                     <span className="dot"></span>
@@ -365,6 +449,19 @@ export default function UserTimeline({ client }) {
                         />
                       </Link>
                     </div>
+                    <button
+                      id={replies._id}
+                      className="hidden like-btn"
+                      onClick={(e) => commentHandler(replies._id, e)}
+                    >
+                    {replies.replyLikedBy.includes(username1) ? "Liked!" : "Like"}
+                    </button>
+                    <button
+                      id={replies._id}
+                      className="hidden reply-btn"
+                    >
+                      Reply
+                    </button>
                   </div>
                 ))
                 .reverse()}

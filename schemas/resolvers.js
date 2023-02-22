@@ -66,6 +66,22 @@ const resolvers = {
       return dislikedPost;
     },
 
+    addCommentLikes: async (_, { reply, username }) => {
+      const likedComment = await Reply.findOneAndUpdate(
+        { _id: reply },
+        { $inc: { replyLikes: 1 }, $push: { replyLikedBy: username } }
+      );
+      return likedComment;
+    },
+
+    removeCommentLikes: async (_, { reply, username }) => {
+      const dislikedComment = await Reply.findOneAndUpdate(
+        { _id: reply },
+        { $inc: { replyLikes: -1 }, $pull: { replyLikedBy: username } }
+      );
+      return dislikedComment;
+    },
+
     addFaves: async (_, { post, username }) => {
       const usersFave = await User.findOneAndUpdate(
         { username: username },
@@ -170,8 +186,7 @@ const resolvers = {
         eachPost.push(posts[i]._doc.thePost);
         id.push(posts[i]._doc._id).toString();
       }
-      console.log("Following: ", 
-      following.length)
+      console.log("Following: ", following.length);
       return {
         _id: id,
         thePost: eachPost,
