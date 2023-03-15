@@ -23,6 +23,9 @@ import faveIcon from "../../Images/faveIcon.png";
 import filledFave from "../../Images/filledFave.png";
 import followIcon from "../../Images/followIcon.png";
 import followingIcon from "../../Images/followingIcon.png";
+import likeThumb from "../../Images/likeThumbnail.png";
+import RightSidePanel from "./RightSidePanel"
+import PostInput from "../ProfileFolder/PostInput"
 import "./UserTimeline.css";
 import { Link } from "react-router-dom";
 
@@ -53,6 +56,8 @@ export default function UserTimeline({ client }) {
   const [count, setCount] = useState(0);
   const [isBouncing, setIsBouncing] = useState(false);
   const [postLikes, setPostLikes] = useState([]);
+  const [greeting, setGreeting] = useState("");
+  const [thumbsUp, setThumbsUp] = useState(false);
   const [liked, setLiked] = useState({
     post: "",
     username: "",
@@ -64,6 +69,7 @@ export default function UserTimeline({ client }) {
   const [follow, setFollow] = useState({
     username: "",
     followedUser: "",
+    profilePic: "",
   });
   const [aReply, setAReply] = useState({
     post: "",
@@ -79,15 +85,18 @@ export default function UserTimeline({ client }) {
   const [addLikes, { error: likeError }] = useMutation(ADD_LIKES, {
     refetchQueries: [{ query: POST_QUERY }],
   });
-  
-  const [addCommentLikes, { error: commentlikeError }] = useMutation(ADD_COMMENT_LIKES, {
-    refetchQueries: [{ query: POST_QUERY }],
-  });
+
+  const [addCommentLikes, { error: commentlikeError }] = useMutation(
+    ADD_COMMENT_LIKES,
+    {
+      refetchQueries: [{ query: POST_QUERY }],
+    }
+  );
 
   const [removeLikes, { error: removeLikeError }] = useMutation(SUB_LIKES, {
     refetchQueries: [{ query: POST_QUERY }],
   });
-  
+
   const [removeCommentLikes, { error: removeCommentLikeError }] = useMutation(
     REMOVE_COMMENT_LIKES,
     {
@@ -110,6 +119,17 @@ export default function UserTimeline({ client }) {
   const [removeFaves, { error: removeFaveError }] = useMutation(REMOVE_FAVE, {
     refetchQueries: [{ query: POST_QUERY }],
   });
+
+  useEffect(() => {
+    const currentTime = new Date().getHours();
+    if (currentTime >= 5 && currentTime < 12) {
+      setGreeting("Good morning");
+    } else if (currentTime >= 12 && currentTime < 18) {
+      setGreeting("Good afternoon");
+    } else {
+      setGreeting("Good evening");
+    }
+  }, []);
 
   useEffect(() => {
     if (addReply.data) {
@@ -143,7 +163,14 @@ export default function UserTimeline({ client }) {
     return <div>Error: Refreshing...</div>;
   }
 
-  const handleClick = (key) => {
+  const handleClick = (key, to) => {
+    let token = Auth.getToken();
+    if (!token) {
+      alert("Must Login to like or reply to a post");
+      return;
+    }
+    const recipient = to;
+    replyHandler(recipient);
     if (key === selectedPostId) {
       setSelectedPostId(null);
       setIsReplyBoxShown(false);
@@ -160,21 +187,53 @@ export default function UserTimeline({ client }) {
       setIsBouncing(isBouncing);
     }, 30);
   };
-
+  const vulgarWords = new Set([
+    "ass",
+    "shit",
+    "bitch",
+    "hoe",
+    "fuck",
+    "dick",
+    "pussy",
+    "motherfucker",
+    "damn",
+    "cum",
+    "balls",
+    "nigger",
+    "asshole",
+  ]);
   const handleChange = (event, key) => {
     const { name, value } = event.target;
+    const words = value.toLowerCase().split(" ");
+    let cleaned;
+    for (let i = 0; i < words.length; i++) {
+      if (vulgarWords.has(words[i])) {
+        // Do something if a vulgar word is found
+
+        console.log("Error: The input contains a vulgar word!");
+        break;
+      }
+
+      const wordString = words.join(" ");
+
+      vulgarWords.forEach((word) => {
+        wordString = wordString.replace(word, "****");
+        cleaned = wordString;
+      });
+    }
+
     setCharCount(event.target.value.length);
     setAReply({
       post: key,
       postId: key,
       userId: user,
-      [name]: value,
+      [name]: cleaned,
       username: user,
       replyImg: user,
     });
   };
 
-  const replyHandler = async (e) => {
+  const replyHandler = async () => {
     try {
       const { data } = await addReply({
         variables: { ...aReply },
@@ -205,7 +264,6 @@ export default function UserTimeline({ client }) {
       username: user,
     });
     if (!clickedFave) {
-      
       try {
         const { data } = await addFaves({
           variables: { post: id, username: username1 },
@@ -218,7 +276,6 @@ export default function UserTimeline({ client }) {
         console.error(err);
       }
     } else {
-    
       try {
         const { data } = await removeFaves({
           variables: { post: id, username: username1 },
@@ -272,21 +329,26 @@ export default function UserTimeline({ client }) {
     }
   }
 
-  async function commentHandler(id, e) {
+  async function replyLikeHandler(id, e) {
     let theLikedComment = e.target.id;
+    let token = Auth.getToken();
+    if (!token) {
+      alert("Must Login to like or reply to a post");
+      return;
+    }
     let theCommentLiked = false;
     for (let i = 0; i < postData.posts.length; i++) {
-        let allPost = postData.posts[i];
-        let postReplies = allPost.replies.filter((replies, i) =>
-          replies._id.includes(id)
-        );
-        console.log("post replies: ", postReplies);
-        if(postReplies.length > 0 && postReplies) {
-         theCommentLiked = postReplies[0].replyLikedBy.includes(username1);
-         break
-        } else {
-          theCommentLiked = false;
-        } 
+      let allPost = postData.posts[i];
+      let postReplies = allPost.replies.filter((replies, i) =>
+        replies._id.includes(id)
+      );
+
+      if (postReplies.length > 0 && postReplies) {
+        theCommentLiked = postReplies[0].replyLikedBy.includes(username1);
+        break;
+      } else {
+        theCommentLiked = false;
+      }
     }
 
     if (!theCommentLiked) {
@@ -315,13 +377,14 @@ export default function UserTimeline({ client }) {
     }
   }
   // Finish logic for setting new icon once user follows and persist data to mongo
-  async function followHandler(user) {
+  async function followHandler(user, userPic) {
     let thefollowedUser = await userData;
     let clickedFollow = thefollowedUser.user.following.includes(user);
 
     setFollow({
       username: username1,
       following: user,
+      profilePic: userPic,
     });
 
     if (!clickedFollow) {
@@ -353,18 +416,14 @@ export default function UserTimeline({ client }) {
 
   function showReplyHandler(id, e) {
     const { lastChild } = e.target;
-    
-        if (lastChild.id === id) {
-          const { childNodes } = e.target;
-          childNodes[6].classList.toggle("hidden");
-          childNodes[7].classList.toggle("hidden");
-          
-        }
-       
-  
+    if (lastChild === null) return;
+
+    if (lastChild.id === id) {
+      const { childNodes } = e.target;
+      childNodes[7].classList.toggle("hidden");
+      childNodes[8].classList.toggle("hidden");
     }
-    
-  
+  }
 
   function convertTimestamp(timestamp) {
     return moment(timestamp * 1).fromNow();
@@ -372,17 +431,123 @@ export default function UserTimeline({ client }) {
 
   return (
     <div className="post-container">
+      {Auth.getToken() && <PostInput user={username1} />}
+      <hr />
       <div className="side-panel">
-        <b>Left Side Panel</b>
+        {Auth.getToken() && <b className="panelTitle">{user}'s Crew...</b>}
+        {Auth.getToken() && (
+          <img className="avatarPic" src={userData.user.profileImg} alt="" />
+        )}
         <hr />
-        {/* Add content for the side panel here */}
+
+        <b>
+          <span className="followTag">Following</span>(
+          {Auth.getToken()
+            ? userData.user.following.length
+            : "Login to access..."}
+          ):
+        </b>
+        <h2 className="panelText">
+          {Auth.getToken() &&
+            userData.user.following.map((person) => {
+              // Find the post corresponding to the person's username
+              const post = postData.posts.find(
+                (post) => post.username === person
+              );
+
+              // If a post was found, return the profileImg along with the person's name
+              if (post) {
+                return (
+                  <p>
+                    <Link
+                      to={"/profile/" + post.username}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <img
+                        className="followPics"
+                        src={
+                          post.profileImg === "No proifle photo yet"
+                            ? defaultProfile
+                            : post.profileImg
+                        }
+                        alt="Profile"
+                      />
+                      {person}
+                    </Link>
+                  </p>
+                );
+              }
+
+              // If no post was found, return just the person's name
+              return (
+                <p>
+                  <img
+                    className="followPics"
+                    src={defaultProfile}
+                    alt="Default Profile"
+                  />
+                  {person}
+                </p>
+              );
+            })}
+        </h2>
+        <b>
+          <span className="followTag">Followers</span>(
+          {Auth.getToken()
+            ? userData.user.followers.length
+            : "Login to access..."}
+          ):
+        </b>
+        <h2 className="panelText">
+          {Auth.getToken() &&
+            userData.user.followers.map((person) => {
+              // Find the post corresponding to the follower's username
+              const post = postData.posts.find(
+                (post) => post.username === person
+              );
+
+              // If a post was found, return the profileImg along with the follower's name
+              if (post) {
+                return (
+                  <p>
+                    <Link
+                      to={"/profile/" + post.username}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <img
+                        className="followPics"
+                        src={
+                          post.profileImg === "No proifle photo yet"
+                            ? defaultProfile
+                            : post.profileImg
+                        }
+                        alt="Profile"
+                      />
+                      {person}
+                    </Link>
+                  </p>
+                );
+              }
+
+              // If no post was found, return just the follower's name
+              return (
+                <p>
+                  <img
+                    className="followPics"
+                    src={defaultProfile}
+                    alt="Default Profile"
+                  />
+                  {person}
+                </p>
+              );
+            })}
+        </h2>
       </div>
-      <div className="right-side-panel">
-        <b>Right Side Panel</b>
-        <hr />
-        {/* Add content for the side panel here */}
-      </div>
-      <b>{username1.toUpperCase()}'s Timeline</b>
+      <RightSidePanel />
+      
+      <b className="greeting">
+        {greeting}, {username1.toUpperCase()}!
+      </b>
       {postData.posts &&
         postData.posts
           .map((post, index) => (
@@ -412,7 +577,9 @@ export default function UserTimeline({ client }) {
                         ? followIcon
                         : followingIcon
                     }
-                    onClick={() => followHandler(post.username)}
+                    onClick={() =>
+                      followHandler(post.username, post.profileImg)
+                    }
                   />
                 )}
               </p>
@@ -431,6 +598,26 @@ export default function UserTimeline({ client }) {
                     <span className="dot"></span>
                     <div className="createdAt">
                       {convertTimestamp(replies.createdAt)}
+                    </div>
+                    <div
+                      id={replies._id}
+                      className={replies.replyLikes ? "thumbsUp" : "hidden"}
+                      data-likes={
+                        replies.replyLikedBy.includes(username1)
+                          ? replies.replyLikedBy.length > 1
+                            ? "Liked by YOU & " +
+                              replies.replyLikedBy
+                                .filter((name) => name !== username1)
+                                .join(", ")
+                            : "Liked by YOU"
+                          : "Liked by: " + replies.replyLikedBy.join(", ")
+                      }
+                    >
+                      <img
+                        id={replies._id}
+                        className="thumbsUp"
+                        src={likeThumb}
+                      />
                     </div>
                     <div className="replyAvatar">
                       <Link
@@ -452,13 +639,17 @@ export default function UserTimeline({ client }) {
                     <button
                       id={replies._id}
                       className="hidden like-btn"
-                      onClick={(e) => commentHandler(replies._id, e)}
+                      onClick={(e) => replyLikeHandler(replies._id, e)}
                     >
-                    {replies.replyLikedBy.includes(username1) ? "Liked!" : "Like"}
+                      {replies.replyLikedBy.includes(username1)
+                        ? "Liked!"
+                        : "Like"}
                     </button>
                     <button
                       id={replies._id}
+                      key={replies.username}
                       className="hidden reply-btn"
+                      onClick={(e) => handleClick(post._id, replies.username)}
                     >
                       Reply
                     </button>
@@ -493,7 +684,7 @@ export default function UserTimeline({ client }) {
                     alt="Like Button"
                     onClick={() => heartHandler(post._id)}
                   />{" "}
-                  <span postError className="count">
+                  <span postError className="count" post-likes={post.likedBy}>
                     <p>{postLikes[index] > 0 ? postLikes[index] : ""}</p>
                   </span>
                   <img

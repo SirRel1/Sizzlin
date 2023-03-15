@@ -49,6 +49,30 @@ const resolvers = {
       );
       return { ...postReply };
     },
+// Write logic to add comments to replies perptually
+    // addReplyTo: async (_, { replyId, userId, replyText, username }) => {
+    //   // const theId = await User.findOne({ _id: userId });
+    //   // const replies = await Post.findById({_id: postId });
+    //   const user_Id = await User.findOne({ username: userId });
+    //   const currentTime = new Date().getTime();
+
+    //   const newReply = await Reply.findOneAndUpdate(
+    //     {
+    //       _id: replyId,
+    //       username,
+    //       replyText,
+    //       replyImg: user_Id.profileImg,
+    //       createdAt: currentTime,
+    //     },
+    //     { $push: { comments: replyText, author: username } }
+    //   );
+
+    //   const postReply = await Post.findOneAndUpdate(
+    //     { _id: postId },
+    //     { $push: { replies: newReply._id } }
+    //   );
+    //   return { ...postReply };
+    // },
 
     addLikes: async (_, { post, username }) => {
       const likedPost = await Post.findOneAndUpdate(
@@ -106,6 +130,7 @@ const resolvers = {
     },
 
     addFollow: async (_, { username, following }) => {
+      
       const followID = await User.findOne({ username: following });
       const userFollowed = await User.findOneAndUpdate(
         { _id: followID._id },
@@ -186,7 +211,7 @@ const resolvers = {
         eachPost.push(posts[i]._doc.thePost);
         id.push(posts[i]._doc._id).toString();
       }
-      console.log("Following: ", following.length);
+      
       return {
         _id: id,
         thePost: eachPost,

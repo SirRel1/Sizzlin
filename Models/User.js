@@ -35,7 +35,8 @@ const userSchema = new Schema(
       required: false,
       default: ["No followers yet"],
       ref: "Users",
-    }],
+    },
+  ],
     
     following: 
       [{type: String,

@@ -24,4 +24,18 @@ const axiosClient = axios.create({
 });
 
 
+// const apiUrl =
+//   "http://www.7timer.info/bin/astro.php?lon=113.17&lat=23.09&ac=0&lang=en&unit=metric&output=internal&tzshift=0";
+
+// axios
+//   .get(apiUrl)
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+
+
 export default axiosClient;
