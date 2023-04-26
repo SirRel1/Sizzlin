@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import Auth from "../../utils/auth";
 import { ADD_POST } from "../../utils/mutations";
+import sendArrow from "../../Images/sendArrow.png"
 
 
 
@@ -14,6 +15,7 @@ export default function PostInput({user}) {
     const countClass = charCount > 312 ? "exceeded" : "counting";
 
     const [addPost, { loading, error }] = useMutation(ADD_POST);
+
 
     const [aPost, setAPost] = useState({
       userId: "",

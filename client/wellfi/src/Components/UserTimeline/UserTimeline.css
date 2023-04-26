@@ -10,9 +10,9 @@
 .side-panel {
   position: fixed;
   top: 80px;
-  left: 242px;
+  left: 13.5em;
   bottom: 433px;
-  width: 18%;
+  width: 17%;
   border: 1px solid rgba(214, 97, 24, 0.945);
   background-color: rgba(197, 194, 156, 0.226);
   border-radius: 14px;
@@ -42,9 +42,9 @@
 .right-side-panel {
   position: fixed;
   top: 80px;
-  right: 242px;
+  right: 13.5em;
   bottom: 433px;
-  width: 18%;
+  width: 17%;
   border: 1px solid rgba(214, 97, 24, 0.945);
   background-color: rgba(197, 194, 156, 0.226);
   border-radius: 14px;
@@ -282,6 +282,8 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 8px;
+  margin-left: 2%;
+  margin-right: 2%;
   margin-bottom: 33px;
   background-color: rgba(197, 194, 156, 0.226);
 }
